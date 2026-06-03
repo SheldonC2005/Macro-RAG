@@ -1,7 +1,8 @@
 # economic_graphrag/agents/planner_agent.py
 from typing import Dict, Any
+import json
 
-from economic_graphrag.llm.openrouter_client import OpenRouterClient
+from economic_graphrag.llm.ollama_client import OllamaClient
 
 class PlannerAgent:
     """
@@ -10,7 +11,7 @@ class PlannerAgent:
     """
 
     def __init__(self):
-        self.llm_client = OpenRouterClient()
+        self.llm_client = OllamaClient()
 
     def plan(self, query: str) -> Dict[str, Any]:
         """

@@ -1,6 +1,7 @@
 # economic_graphrag/main_workflow.py
 from typing import TypedDict, List, Dict, Any
 from langgraph.graph import StateGraph, END
+import json
 
 from economic_graphrag.agents.planner_agent import PlannerAgent
 from economic_graphrag.agents.vector_agent import VectorAgent
