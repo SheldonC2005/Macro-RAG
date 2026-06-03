@@ -1,0 +1,34 @@
+# requirements.txt
+
+# Core libraries
+python-dotenv
+langchain
+langgraph
+sentence-transformers
+numpy
+pandas
+
+# Data sources
+requests
+# For PDF loading
+pymupdf
+pdfplumber
+
+# Vector store
+chromadb
+
+# Graph database
+neo4j
+
+# UI
+streamlit
+
+# LLM
+ollama
+
+# NLP
+spacy
+# Run `python -m spacy download en_core_web_sm` after installing
+
+# Utilities
+pydantic
