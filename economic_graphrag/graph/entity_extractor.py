@@ -2,7 +2,7 @@
 import spacy
 from typing import List, Dict, Any, Set, Tuple
 
-from economic_graphrag.llm.ollama_client import OllamaClient
+from economic_graphrag.llm.openrouter_client import OpenRouterClient
 
 # Load spaCy model
 try:
@@ -20,7 +20,7 @@ class EntityExtractor:
     """
 
     def __init__(self):
-        self.ollama_client = OllamaClient()
+        self.llm_client = OpenRouterClient()
 
     def extract_entities_spacy(self, text: str) -> Dict[str, Set[str]]:
         """
@@ -75,7 +75,7 @@ class EntityExtractor:
         }}
         """
         
-        response = self.ollama_client.generate(prompt, format="json")
+        response = self.llm_client.generate(prompt, format="json")
         
         if "error" in response or 'response' not in response:
             print(f"LLM extraction failed: {response.get('error', 'No response field')}")

@@ -31,10 +31,9 @@ def run_ingestion_pipeline():
 
     # Load from APIs
     # Note: These make live API calls.
-    # all_docs.extend(load_worldbank_data())
-    # all_docs.extend(load_fred_data())
-    # all_docs.extend(load_oecd_data())
-    print("Skipping API loaders for this run. Uncomment in main_ingestion.py to run them.")
+    all_docs.extend(load_worldbank_data())
+    all_docs.extend(load_fred_data())
+    all_docs.extend(load_oecd_data())
 
 
     # Load from PDFs

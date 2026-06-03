@@ -1,5 +1,24 @@
-# economic_graphrag/chunking/chunker.py
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+# Attempt to import RecursiveCharacterTextSplitter from possible locations
+try:
+    from langchain.text_splitter import RecursiveCharacterTextSplitter  # type: ignore  # noqa: F401
+except ImportError:
+    try:
+        from langchain.text_splitters import RecursiveCharacterTextSplitter  # type: ignore  # noqa: F401
+    except ImportError:
+        # Simple fallback implementation
+        class RecursiveCharacterTextSplitter:
+            def __init__(self, chunk_size: int = 1000, chunk_overlap: int = 200, *args, **kwargs):
+                self.chunk_size = chunk_size
+                self.chunk_overlap = chunk_overlap
+
+            def split_text(self, text: str):
+                chunks = []
+                i = 0
+                while i < len(text):
+                    chunks.append(text[i : i + self.chunk_size])
+                    i += self.chunk_size - self.chunk_overlap
+                return chunks
+
 from typing import List, Dict, Any
 import uuid
 

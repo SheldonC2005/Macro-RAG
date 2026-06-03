@@ -18,9 +18,9 @@ FRED_DIR = DATA_DIR / "fred"
 OECD_DIR = DATA_DIR / "oecd"
 TESTS_DIR = BASE_DIR / "tests"
 
-# --- Ollama Configuration ---
-OLLAMA_ENDPOINT = os.getenv("OLLAMA_ENDPOINT", "http://localhost:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
+# --- OpenRouter Configuration ---
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "google/gemini-2.0-flash-lite-preview-02-05:free")
 
 # --- Embedding Model Configuration ---
 EMBEDDING_MODEL_NAME = "BAAI/bge-small-en-v1.5"

@@ -2,13 +2,13 @@
 from typing import TypedDict, List, Dict, Any
 from langgraph.graph import StateGraph, END
 
-from .agents.planner_agent import PlannerAgent
-from .agents.vector_agent import VectorAgent
-from .agents.graph_agent import GraphAgent
-from .agents.answer_agent import AnswerAgent
-from .retrieval.vector_retriever import VectorRetriever
-from .retrieval.graph_retriever import GraphRetriever
-from .vector_store.chroma_manager import ChromaVectorStore
+from economic_graphrag.agents.planner_agent import PlannerAgent
+from economic_graphrag.agents.vector_agent import VectorAgent
+from economic_graphrag.agents.graph_agent import GraphAgent
+from economic_graphrag.agents.answer_agent import AnswerAgent
+from economic_graphrag.retrieval.vector_retriever import VectorRetriever
+from economic_graphrag.retrieval.graph_retriever import GraphRetriever
+from economic_graphrag.vector_store.chroma_manager import ChromaVectorStore
 
 # Define the state for our LangGraph
 class GraphState(TypedDict):

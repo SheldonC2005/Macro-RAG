@@ -1,7 +1,7 @@
 # economic_graphrag/agents/answer_agent.py
 from typing import Dict, Any, List
 
-from economic_graphrag.llm.ollama_client import OllamaClient
+from economic_graphrag.llm.openrouter_client import OpenRouterClient
 
 class AnswerAgent:
     """
@@ -9,7 +9,7 @@ class AnswerAgent:
     """
 
     def __init__(self):
-        self.ollama_client = OllamaClient()
+        self.llm_client = OpenRouterClient()
 
     def generate_answer(self, query: str, context: Dict[str, List[Dict[str, Any]]]) -> Dict[str, Any]:
         """
@@ -61,7 +61,7 @@ class AnswerAgent:
         }}
         """
 
-        response = self.ollama_client.generate(prompt, format="json")
+        response = self.llm_client.generate(prompt, format="json")
 
         if "error" in response or 'response' not in response:
             return {"answer": "Failed to generate an answer.", "sources": [], "explainability": response.get("error", "No response from LLM.")}

@@ -3,11 +3,13 @@ import streamlit as st
 import json
 from pathlib import Path
 
-# Adjust path to import from the parent directory
+# Add the package root (economic_graphrag) to Python path so absolute imports work
 import sys
+from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-from main_workflow import MainWorkflow
+# Import the workflow using the absolute package name
+from economic_graphrag.main_workflow import MainWorkflow
 
 st.set_page_config(layout="wide", page_title="Economic GraphRAG")
 

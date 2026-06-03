@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy the requirements file into the container at /app
 COPY requirements.txt .
 
+# Install torch (CPU only) first to save hundreds of megabytes
+RUN pip install --default-timeout=1000 --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -17,7 +20,7 @@ RUN python -m spacy download en_core_web_sm
 COPY . .
 
 # Make port 8501 available to the world outside this container (for Streamlit)
-EXPOSE 8501
+ENV PYTHONPATH=/app
 
 # Define environment variable
 ENV NAME World
