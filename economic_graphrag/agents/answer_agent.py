@@ -1,7 +1,8 @@
 # economic_graphrag/agents/answer_agent.py
 from typing import Dict, Any, List
 
-from economic_graphrag.llm.openrouter_client import OpenRouterClient
+from economic_graphrag.llm.gemini_client import GeminiClient
+from economic_graphrag.llm.json_utils import LLMJSONParseError, parse_json_object
 
 class AnswerAgent:
     """
@@ -9,7 +10,7 @@ class AnswerAgent:
     """
 
     def __init__(self):
-        self.llm_client = OpenRouterClient()
+        self.llm_client = GeminiClient()
 
     def generate_answer(self, query: str, context: Dict[str, List[Dict[str, Any]]]) -> Dict[str, Any]:
         """
@@ -67,9 +68,9 @@ class AnswerAgent:
             return {"answer": "Failed to generate an answer.", "sources": [], "explainability": response.get("error", "No response from LLM.")}
 
         try:
-            llm_result = json.loads(response['response'])
+            llm_result = parse_json_object(response['response'])
             return llm_result
-        except (json.JSONDecodeError, TypeError):
+        except LLMJSONParseError:
             return {"answer": "Failed to parse the generated answer.", "sources": [], "explainability": f"Raw response: {response.get('response')}"}
 
     def _format_vector_context(self, vector_results: List[Dict[str, Any]]) -> str:
@@ -123,4 +124,4 @@ if __name__ == '__main__':
         final_answer = answer_agent.generate_answer(query, mock_context)
         print(json.dumps(final_answer, indent=2))
     except Exception as e:
-        print(f"Answer generation failed. Is Ollama running? Error: {e}")
+        print(f"Answer generation failed. Is Gemini configured and reachable? Error: {e}")

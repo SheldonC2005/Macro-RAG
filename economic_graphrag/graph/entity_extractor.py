@@ -2,7 +2,8 @@
 import spacy
 from typing import List, Dict, Any, Set, Tuple
 
-from economic_graphrag.llm.openrouter_client import OpenRouterClient
+from economic_graphrag.llm.gemini_client import GeminiClient
+from economic_graphrag.llm.json_utils import LLMJSONParseError, parse_json_object
 
 # Load spaCy model
 try:
@@ -20,7 +21,7 @@ class EntityExtractor:
     """
 
     def __init__(self):
-        self.llm_client = OpenRouterClient()
+        self.llm_client = GeminiClient()
 
     def extract_entities_spacy(self, text: str) -> Dict[str, Set[str]]:
         """
@@ -82,13 +83,12 @@ class EntityExtractor:
             return {"entities": {}, "relationships": []}
             
         try:
-            # The actual response from the model is a string, which needs to be parsed as JSON again
-            llm_result = json.loads(response['response'])
+            llm_result = parse_json_object(response['response'])
             # Basic validation
             if "entities" not in llm_result or "relationships" not in llm_result:
                 return {"entities": {}, "relationships": []}
             return llm_result
-        except (json.JSONDecodeError, TypeError):
+        except LLMJSONParseError:
             print(f"Failed to decode LLM response JSON: {response.get('response')}")
             return {"entities": {}, "relationships": []}
 
@@ -160,16 +160,16 @@ if __name__ == '__main__':
     print(spacy_results)
 
     print("\n--- Testing LLM Extraction ---")
-    # This can be slow and requires Ollama to be running
+    # This can be slow and requires Gemini to be configured and reachable.
     try:
         llm_results = extractor.extract_with_llm(test_chunk["content"])
         print(json.dumps(llm_results, indent=2))
     except Exception as e:
-        print(f"LLM extraction failed. Is Ollama running? Error: {e}")
+        print(f"LLM extraction failed. Is Gemini configured and reachable? Error: {e}")
 
     print("\n--- Testing Combined Extraction ---")
     try:
         combined_results = extractor.extract_all(test_chunk)
         print(json.dumps(combined_results, indent=2))
     except Exception as e:
-        print(f"Combined extraction failed. Is Ollama running? Error: {e}")
+        print(f"Combined extraction failed. Is Gemini configured and reachable? Error: {e}")

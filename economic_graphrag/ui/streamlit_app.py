@@ -11,19 +11,60 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 # Import the workflow using the absolute package name
 from economic_graphrag.main_workflow import MainWorkflow
 
+APP_RUNTIME_VERSION = "gemini-v1"
+STALE_PROVIDER_MARKERS = (
+    "OpenRouter",
+    "openrouter",
+    "OPENROUTER",
+    "All models failed",
+    "Provider returned error",
+    "qwen/",
+    "free-model quota",
+)
+
+
+def _contains_stale_provider_error(value):
+    if isinstance(value, str):
+        return any(marker in value for marker in STALE_PROVIDER_MARKERS)
+    if isinstance(value, dict):
+        return any(_contains_stale_provider_error(item) for item in value.values())
+    if isinstance(value, (list, tuple)):
+        return any(_contains_stale_provider_error(item) for item in value)
+    return False
+
+
+def _clear_runtime_state():
+    st.session_state.pop("workflow", None)
+    st.session_state.messages = []
+
+
 st.set_page_config(layout="wide", page_title="Economic GraphRAG")
 
 st.title("📈 Agentic Hybrid GraphRAG for Macroeconomic Intelligence")
-st.caption("A local-first RAG system using LangGraph, Ollama, Neo4j, and ChromaDB.")
+st.caption("A local-first RAG system using LangGraph, Gemini, Neo4j, and ChromaDB.")
+
+if st.session_state.get("app_runtime_version") != APP_RUNTIME_VERSION:
+    _clear_runtime_state()
+    st.session_state.app_runtime_version = APP_RUNTIME_VERSION
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+elif any(_contains_stale_provider_error(message) for message in st.session_state.messages):
+    _clear_runtime_state()
+    st.session_state.app_runtime_version = APP_RUNTIME_VERSION
+
+with st.sidebar:
+    st.caption("Runtime: Gemini")
+    if st.button("Reset chat", use_container_width=True):
+        _clear_runtime_state()
+        st.session_state.app_runtime_version = APP_RUNTIME_VERSION
+        st.rerun()
 
 # Initialize the workflow in session state
 if 'workflow' not in st.session_state:
     with st.spinner("Initializing RAG workflow..."):
         st.session_state.workflow = MainWorkflow()
         st.success("Workflow initialized!")
-
-if 'messages' not in st.session_state:
-    st.session_state.messages = []
 
 # Display chat messages
 for message in st.session_state.messages:
@@ -124,6 +165,6 @@ if prompt := st.chat_input("Ask a macroeconomic question..."):
 
 # To run this app:
 # 1. Make sure all dependencies are installed: pip install -r requirements.txt
-# 2. Make sure Ollama and Neo4j are running.
+# 2. Make sure Gemini is configured and Neo4j is running.
 # 3. Run the data ingestion script if you haven't already.
 # 4. In your terminal, run: streamlit run economic_graphrag/ui/streamlit_app.py

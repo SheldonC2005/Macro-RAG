@@ -90,7 +90,7 @@ def run_ingestion_pipeline():
         print("Knowledge graph build process initiated.")
     except Exception as e:
         print(f"Error building knowledge graph: {e}")
-        print("Please ensure Neo4j and Ollama are running.")
+        print("Please ensure Neo4j is running and Gemini is configured.")
 
     # --- 5. Cleanup ---
     print("\n[Phase 5/5] Cleaning up connections...")

@@ -118,7 +118,7 @@ class MainWorkflow:
 
 if __name__ == '__main__':
     # This is a full end-to-end example. It requires all components to be set up,
-    # including populated vector and graph databases, and a running Ollama instance.
+    # including populated vector and graph databases, and Gemini API access.
     
     print("--- Initializing Main Workflow ---")
     workflow = MainWorkflow()
@@ -139,4 +139,4 @@ if __name__ == '__main__':
         
     except Exception as e:
         print(f"\nAn error occurred during workflow execution: {e}")
-        print("Please ensure all services (Ollama, Neo4j) are running and data has been ingested.")
+        print("Please ensure Gemini is configured, Neo4j is running, and data has been ingested.")

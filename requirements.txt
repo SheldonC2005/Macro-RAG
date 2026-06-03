@@ -23,9 +23,6 @@ neo4j
 # UI
 streamlit
 
-# LLM
-ollama
-
 # NLP
 spacy
 # Run `python -m spacy download en_core_web_sm` after installing
